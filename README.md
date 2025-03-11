@@ -70,7 +70,8 @@ npm run dev  # 프론트엔드 서버
 
 ## 任意で工夫したポイント
 - ERD 정확성
-- API request, response 형식
+- API 설계
+- 프론트엔드 상태관리
 
 
 ## 스크린샷
