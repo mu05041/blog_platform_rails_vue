@@ -1,14 +1,20 @@
 <template>
     <div class="container py-4">
-      <h2 class="text-center mb-4">새 게시물 작성</h2>
+      <h2 class="text-center mb-4">게시물 수정</h2>
       
       <!-- 오류 메시지 -->
       <div v-if="error" class="alert alert-danger">{{ error }}</div>
+      
+      <!-- 로딩 상태 -->
+      <div v-if="isLoading" class="text-center py-5">
+        <div class="spinner-border text-primary"></div>
+        <p class="mt-2">게시물을 불러오는 중입니다...</p>
+      </div>
   
-      <!-- 게시물 작성 폼 -->
-      <div class="row">
+      <!-- 게시물 수정 폼 -->
+      <div v-else class="row">
         <div class="col-lg-8 col-md-10 mx-auto">
-          <form @submit.prevent="createPost">
+          <form @submit.prevent="updatePost">
             <!-- 제목 입력 -->
             <div class="mb-3">
               <label for="title" class="form-label">제목</label>
@@ -75,12 +81,12 @@
             
             <!-- 버튼 그룹 -->
             <div class="d-flex justify-content-between">
-              <RouterLink :to="`/${username}/posts`" class="btn btn-secondary">
+              <RouterLink :to="`/${username}/posts/${postId}`" class="btn btn-secondary">
                 취소
               </RouterLink>
               <button type="submit" class="btn btn-primary" :disabled="isSubmitting">
                 <span v-if="isSubmitting" class="spinner-border spinner-border-sm me-1"></span>
-                등록
+                수정
               </button>
             </div>
           </form>
@@ -100,7 +106,8 @@
   const authStore = useAuthStore();
   const API_URL = 'http://localhost:3000/api/v1';
   
-  // 사용자 이름
+  // URL에서 id 가져오기
+  const postId = ref(route.params.id || '');
   const username = ref(authStore.user?.username || '');
   
   // 게시물 폼 데이터
@@ -112,6 +119,7 @@
   });
   
   // 상태 관리
+  const isLoading = ref(true);
   const isSubmitting = ref(false);
   const error = ref('');
   
@@ -134,8 +142,46 @@
     { id: 6, name: 'Stormy' }
   ]);
   
-  // 게시물 생성 요청
-  const createPost = () => {
+  // 게시물 정보 가져오기
+  const fetchPost = () => {
+    isLoading.value = true;
+    error.value = '';
+    
+    // API 엔드포인트 설정 - 명세서에 맞게 수정
+    const endpoint = `${API_URL}/${username.value}/posts/${postId.value}`;
+    
+    // 세션 기반 인증이므로 별도 헤더 불필요
+    axios.defaults.withCredentials = true;
+    
+    axios({
+      method: 'get',
+      url: endpoint
+    })
+    .then(res => {
+      const post = res.data;
+      postForm.value.title = post.title;
+      postForm.value.content = post.content;
+      
+      // 카테고리와 태그 ID 설정
+      if (post.categories) {
+        postForm.value.category_ids = post.categories.map(cat => cat.id);
+      }
+      
+      if (post.tags) {
+        postForm.value.tag_ids = post.tags.map(tag => tag.id);
+      }
+      
+      isLoading.value = false;
+    })
+    .catch(err => {
+      console.error('게시물 로딩 오류:', err);
+      error.value = err.response?.data?.error || '게시물을 불러오는 중 오류가 발생했습니다.';
+      isLoading.value = false;
+    });
+  };
+  
+  // 게시물 수정 요청
+  const updatePost = () => {
     isSubmitting.value = true;
     error.value = '';
     
@@ -151,19 +197,23 @@
     };
     
     // API 요청
-    axios.post(`${API_URL}/posts`, postData)
-      .then(() => {
-        router.push(`/${username.value}/posts`);
-      })
-      .catch(err => {
-        console.error('게시물 등록 오류:', err);
-        error.value = err.response?.data?.error || '게시물 등록에 실패했습니다';
-        isSubmitting.value = false;
-      });
+    axios({
+      method: 'put',
+      url: `${API_URL}/posts/${postId.value}`,
+      data: postData
+    })
+    .then(() => {
+      router.push(`/${username.value}/posts/${postId.value}`);
+    })
+    .catch(err => {
+      console.error('게시물 수정 오류:', err);
+      error.value = err.response?.data?.error || '게시물 수정에 실패했습니다';
+      isSubmitting.value = false;
+    });
   };
   
   onMounted(() => {
-    // 카테고리와 태그는 이미 로컬에 정의되어 있음
+    fetchPost();
   });
   </script>
   

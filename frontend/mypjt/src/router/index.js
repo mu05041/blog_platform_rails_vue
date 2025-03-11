@@ -4,6 +4,8 @@ import LoginView from '@/views/LoginView.vue'
 import SignupView from '@/views/SignupView.vue'
 import UserPostsView from '@/views/UserPostsView.vue'
 import PostDetailView from '@/views/PostDetailView.vue'
+import CreatePostView from '@/views/CreatePostView.vue'
+import EditPostView from '@/views/EditPostView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -36,18 +38,18 @@ const router = createRouter({
       name: 'PostDetail',
       component: PostDetailView
     },
-    // {
-    //   path: '/posts/create',
-    //   name: 'CreatePost',
-    //   component: CreatePostView,
-    //   meta: { requiresAuth: true }
-    // },
-    // {
-    //   path: '/posts/:id/edit',
-    //   name: 'EditPost',
-    //   component: EditPostView,
-    //   meta: { requiresAuth: true }
-    // }
+    {
+      path: '/posts/create',
+      name: 'CreatePost',
+      component: CreatePostView,
+      meta: { requiresAuth: true }
+    },
+    {
+      path: '/posts/:id/edit',
+      name: 'EditPost',
+      component: EditPostView,
+      meta: { requiresAuth: true }
+    }
 
     ],
   })
