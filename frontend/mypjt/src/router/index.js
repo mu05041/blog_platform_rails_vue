@@ -9,6 +9,7 @@ import BlogPostEditorView from '@/views/BlogPostEditorView.vue'
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
+    // 인증 관련련
     {
       path: '/',
       name: 'Home',
@@ -42,20 +43,20 @@ const router = createRouter({
       {
         path: '/my/blog',
         name: 'MyBlog',
-        component: UserBlogView, // UserBlogView 컴포넌트 재사용
+        component: UserBlogView,
         props: { isMyBlog: true },
         meta: { requiresAuth: true }
       },
       {
         path: '/my/blog/posts/new',
         name: 'NewBlogPost',
-        component: BlogPostEditorView, // 새 컴포넌트 필요
+        component: BlogPostEditorView,
         meta: { requiresAuth: true }
       },
       {
         path: '/my/blog/posts/:id/edit',
         name: 'EditBlogPost',
-        component: BlogPostEditorView, // 새 컴포넌트 재사용
+        component: BlogPostEditorView, 
         props: route => ({ 
           id: route.params.id,
           isEditing: true 
@@ -65,7 +66,7 @@ const router = createRouter({
       {
         path: '/my/blog/posts/:id',
         name: 'MyBlogPostDetail',
-        component: UserBlogPostDetailView, // UserBlogPostDetailView 컴포넌트 재사용
+        component: UserBlogPostDetailView,
         props: route => ({ 
           id: route.params.id,
           isMyBlog: true 

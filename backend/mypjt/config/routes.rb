@@ -6,19 +6,12 @@ Rails.application.routes.draw do
       post '/login', to: 'auth#login'
       delete '/logout', to: 'auth#logout'
       
-      # 공개 블로그 조회
-      namespace :blogs do
-        scope ':username' do
-          resources :posts, only: [:index, :show]
-        end
-      end
+      # 사용자 별 블로그 게시물 조회
+      get '/:username/posts', to: 'posts#user_posts'
+      get '/:username/posts/:id', to: 'posts#user_post'
       
-      # 내 블로그 관리 (인증 필요)
-      namespace :my do
-        namespace :blog do
-          resources :posts
-        end
-      end
+      # 게시물 CRUD (인증 필요)
+      resources :posts, only: [:create, :update, :destroy]
     end
   end
 end

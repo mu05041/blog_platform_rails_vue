@@ -1,22 +1,31 @@
 class Api::V1::PostsController < ApplicationController
-  before_action :require_user, except: [:index, :show]
-  before_action :set_post, only: [:show, :update, :destroy]
+  before_action :require_user, except: [:user_posts, :user_post]
+  before_action :set_post, only: [:update, :destroy]
+  before_action :set_user_post, only: [:user_post]
   before_action :authorize_user, only: [:update, :destroy]
-
-  def index
-    posts = Post.includes(:user, :categories, :tags)
-                .order(created_at: :desc)
+  
+  # 사용자별 게시물 목록 (GET api/v1/:username/posts)
+  def user_posts
+    user = User.find_by(username: params[:username])
     
-    render json: posts.as_json(
-      include: {
-        user: { only: [:id, :username] },
-        categories: { only: [:id, :name] },
-        tags: { only: [:id, :name] }
-      }
-    )
+    if user
+      posts = user.posts.includes(:categories, :tags)
+                  .order(created_at: :desc)
+      
+      render json: posts.as_json(
+        include: {
+          user: { only: [:id, :username] },
+          categories: { only: [:id, :name] },
+          tags: { only: [:id, :name] }
+        }
+      )
+    else
+      render json: { error: "사용자를 찾을 수 없습니다." }, status: :not_found
+    end
   end
-
-  def show
+  
+  # 사용자별 게시물 상세 (GET api/v1/:username/posts/:id)
+  def user_post
     render json: @post.as_json(
       include: {
         user: { only: [:id, :username] },
@@ -30,7 +39,8 @@ class Api::V1::PostsController < ApplicationController
       }
     )
   end
-
+  
+  # 게시물 생성 (POST api/v1/posts)
   def create
     post = current_user.posts.build(post_params)
     
@@ -46,34 +56,54 @@ class Api::V1::PostsController < ApplicationController
       render json: { errors: post.errors.full_messages }, status: :unprocessable_entity
     end
   end
-
+  
+  # 게시물 수정 (PUT api/v1/posts/:id)
   def update
     if @post.update(post_params)
+      # 카테고리와 태그 업데이트 추가
+      @post.category_ids = params[:post][:category_ids] if params[:post][:category_ids]
+      @post.tag_ids = params[:post][:tag_ids] if params[:post][:tag_ids]
+      
       render json: @post
     else
       render json: { errors: @post.errors.full_messages }, status: :unprocessable_entity
     end
   end
-
+  
+  # 게시물 삭제 (DELETE api/v1/posts/:id)
   def destroy
     @post.destroy
     head :no_content
   end
-
+  
   private
-
+  
   def set_post
     @post = Post.find(params[:id])
   end
-
-  def post_params
-    params.require(:post).permit(:title, :content, :published, category_ids: [], tag_ids: [])
+  
+  def set_user_post
+    user = User.find_by(username: params[:username])
+    
+    if user
+      @post = user.posts.includes(:user, :categories, :tags, comments: :user)
+                 .find_by(id: params[:id])
+      
+      unless @post
+        render json: { error: "게시물을 찾을 수 없습니다." }, status: :not_found
+      end
+    else
+      render json: { error: "사용자를 찾을 수 없습니다." }, status: :not_found
+    end
   end
-
+  
+  def post_params
+    params.require(:post).permit(:title, :content, :published)
+  end
+  
   def authorize_user
     unless @post.user_id == current_user.id
       render json: { error: "자신의 게시물만 수정/삭제할 수 있습니다." }, status: :forbidden
     end
   end
-
 end
