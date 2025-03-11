@@ -2,9 +2,8 @@ import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '@/views/HomeView.vue'
 import LoginView from '@/views/LoginView.vue'
 import SignupView from '@/views/SignupView.vue'
-import UserBlogView from '@/views/UserBlogView.vue'
-import UserBlogPostDetailView from '@/views/UserBlogPostDetailView.vue'
-import BlogPostEditorView from '@/views/BlogPostEditorView.vue'
+import UserPostsView from '@/views/UserPostsView.vue'
+import PostDetailView from '@/views/PostDetailView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -26,53 +25,30 @@ const router = createRouter({
       component: SignupView
     },
 
-    // 공개블로그 접근 라우트
+    // 블로그 관련 라우트
     {
-      path: '/blogs/:username',
-      name: 'UserBlog',
-      component: UserBlogView
+      path: '/:username/posts',
+      name: 'UserPosts',
+      component: UserPostsView
     },
     {
-      path: '/blogs/:username/posts/:id',
-      name: 'UserBlogPostDetail',
-      component: UserBlogPostDetailView
+      path: '/:username/posts/:id',
+      name: 'PostDetail',
+      component: PostDetailView
     },
+    // {
+    //   path: '/posts/create',
+    //   name: 'CreatePost',
+    //   component: CreatePostView,
+    //   meta: { requiresAuth: true }
+    // },
+    // {
+    //   path: '/posts/:id/edit',
+    //   name: 'EditPost',
+    //   component: EditPostView,
+    //   meta: { requiresAuth: true }
+    // }
 
-
-      // 내 블로그 관리 라우트 (인증 필요)
-      {
-        path: '/my/blog',
-        name: 'MyBlog',
-        component: UserBlogView,
-        props: { isMyBlog: true },
-        meta: { requiresAuth: true }
-      },
-      {
-        path: '/my/blog/posts/new',
-        name: 'NewBlogPost',
-        component: BlogPostEditorView,
-        meta: { requiresAuth: true }
-      },
-      {
-        path: '/my/blog/posts/:id/edit',
-        name: 'EditBlogPost',
-        component: BlogPostEditorView, 
-        props: route => ({ 
-          id: route.params.id,
-          isEditing: true 
-        }),
-        meta: { requiresAuth: true }
-      },
-      {
-        path: '/my/blog/posts/:id',
-        name: 'MyBlogPostDetail',
-        component: UserBlogPostDetailView,
-        props: route => ({ 
-          id: route.params.id,
-          isMyBlog: true 
-        }),
-        meta: { requiresAuth: true }
-      },
     ],
   })
 

@@ -57,7 +57,7 @@ const authStore = useAuthStore()
 const logIn = () => {
   console.log('Login Success')  
   authStore.login(email.value, password.value)
-    .then(() => router.push('/'))
+    .then(() => router.push({ name:'UserPosts', params:{username: authStore.user.username}}))
     .catch(error => console.error('Login failed:', error))
 }
 </script>
