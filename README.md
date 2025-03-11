@@ -7,8 +7,12 @@ Ruby on Rails와 Vue.js를 사용한 간단한 블로그 플랫폼입니다.
 ## 기술 스택
 - Backend: Ruby on Rails
 - Frontend: Vue.js
+- 상태 관리: Pinia
 - 데이터베이스: SQLite
-- 기타 라이브러리: axios, bootstrap
+- 기타 라이브러리: 
+    - Axios (HTTP 클라이언트)
+    - Bootstrap (UI 프레임워크)
+
 
 ## 기능 설명
 1. **ブログ記事の管理**
@@ -52,11 +56,15 @@ rails db:migrate
 rails db:seed
 
 # 프론트엔드 의존성 설치
-npm install  
+npm install
+npm install axios
+npm i pinia-plugin-persistedstate
+npm install bootstrap-vue-3
+
 
 # 서버 실행
 rails s  # 백엔드 서버
-npm run serve  # 프론트엔드 서버
+npm run dev  # 프론트엔드 서버
 ```
 
 
