@@ -4,6 +4,7 @@ import LoginView from '@/views/LoginView.vue'
 import SignupView from '@/views/SignupView.vue'
 import UserBlogView from '@/views/UserBlogView.vue'
 import UserBlogPostDetailView from '@/views/UserBlogPostDetailView.vue'
+import BlogPostEditorView from '@/views/BlogPostEditorView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -37,8 +38,44 @@ const router = createRouter({
     },
 
 
-    
-  ],
-})
+      // 내 블로그 관리 라우트 (인증 필요)
+      {
+        path: '/my/blog',
+        name: 'MyBlog',
+        component: UserBlogView, // UserBlogView 컴포넌트 재사용
+        props: { isMyBlog: true },
+        meta: { requiresAuth: true }
+      },
+      {
+        path: '/my/blog/posts/new',
+        name: 'NewBlogPost',
+        component: BlogPostEditorView, // 새 컴포넌트 필요
+        meta: { requiresAuth: true }
+      },
+      {
+        path: '/my/blog/posts/:id/edit',
+        name: 'EditBlogPost',
+        component: BlogPostEditorView, // 새 컴포넌트 재사용
+        props: route => ({ 
+          id: route.params.id,
+          isEditing: true 
+        }),
+        meta: { requiresAuth: true }
+      },
+      {
+        path: '/my/blog/posts/:id',
+        name: 'MyBlogPostDetail',
+        component: UserBlogPostDetailView, // UserBlogPostDetailView 컴포넌트 재사용
+        props: route => ({ 
+          id: route.params.id,
+          isMyBlog: true 
+        }),
+        meta: { requiresAuth: true }
+      },
+    ],
+  })
+
+
+  
 
 export default router
