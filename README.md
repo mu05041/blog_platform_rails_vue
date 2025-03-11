@@ -1,0 +1,1 @@
+# blog_platform_rails_vue
