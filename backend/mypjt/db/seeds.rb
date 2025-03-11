@@ -10,24 +10,24 @@
 
 # db/seeds.rb
 categories = [
-  'Sunny',
-  'Cloudy', 
-  'Rainy',
-  'Snowy',
-  'Windy',
-  'Stormy'
-]
-categories.each do |category_name|
-  Category.find_or_create_by(name: category_name)
-end
-
-tags = [
   'Travel', 
   'Food', 
   'Lifestyle', 
   'Technology', 
   'Sports', 
   'Music'
+]
+categories.each do |category_name|
+  Category.find_or_create_by(name: category_name)
+end
+
+tags = [
+  'Sunny',
+  'Cloudy', 
+  'Rainy',
+  'Snowy',
+  'Windy',
+  'Stormy'
 ]
 tags.each do |tag_name|
   Tag.create(name: tag_name)
