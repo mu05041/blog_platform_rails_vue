@@ -14,6 +14,33 @@
         </div>
       </div>
     </div>
+
+      <!-- 검색 및 필터링 UI -->
+        <div class="row mb-4">
+      <div class="col-md-6 mb-3 mb-md-0">
+        <div class="input-group">
+          <input 
+            type="text" 
+            class="form-control" 
+            placeholder="게시물 검색..." 
+            v-model="searchQuery"
+            @input="filterPosts"
+          >
+          <button class="btn btn-outline-secondary" type="button" @click="filterPosts">
+            <i class="bi bi-search"></i> 검색
+          </button>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <select class="form-select" v-model="selectedCategory" @change="filterPosts">
+          <option value="">모든 카테고리</option>
+          <option v-for="category in categories" :key="category.id" :value="category.id">
+            {{ category.name }}
+          </option>
+        </select>
+      </div>
+    </div>
+    
   
     <!-- 로딩 상태 -->
     <div v-if="isLoading" class="text-center py-5">
@@ -35,7 +62,7 @@
 
     <!-- 블로그 게시물 목록 -->
     <div v-else class="row">
-      <div v-for="post in posts" :key="post.id" class="col-md-6 mb-4">
+      <div v-for="post in filteredPosts" :key="post.id" class="col-md-6 mb-4">
         <div class="card w-100 h-100 shadow-sm">
           <div class="card-body">
             <h5 class="card-title">{{ post.title }}</h5>
@@ -69,7 +96,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, computed } from 'vue';
 import { useRoute } from 'vue-router';
 import axios from 'axios';
 import { useAuthStore } from '@/stores/auth';
@@ -93,6 +120,40 @@ const isMyBlog = ref(false);
 if (authStore.user && username.value === authStore.user.username) {
   isMyBlog.value = true;
 }
+
+// store에서 카테고리 가져오기
+import { useBlogStore } from '@/stores/blog';
+const blogStore = useBlogStore();
+const categories = computed(() => blogStore.categories);
+const tags = computed(() => blogStore.tags);
+
+// 필터링 및 검색 상태
+const selectedCategory = ref('');
+
+// 필터링 여부 확인
+const isFiltering = computed(() => {
+  return selectedCategory.value !== '';
+});
+
+// 필터링된 게시물 목록
+const filteredPosts = computed(() => {
+  return posts.value.filter(post => {
+    // 카테고리 필터 확인
+    return selectedCategory.value === '' || 
+      (post.categories && post.categories.some(cat => cat.id === selectedCategory.value));
+  });
+});
+
+// 카테고리 설정
+const setCategory = (categoryId) => {
+  selectedCategory.value = categoryId;
+};
+
+// 필터 초기화
+const resetFilters = () => {
+  selectedCategory.value = '';
+};
+
 
 // 게시물 정보 가져오기
 const getBlogPosts = () => {
