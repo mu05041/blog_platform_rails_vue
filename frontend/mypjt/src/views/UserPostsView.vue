@@ -129,15 +129,23 @@ const tags = computed(() => blogStore.tags);
 
 // 필터링 및 검색 상태
 const selectedCategory = ref('');
+const searchQuery = ref('')
 
 // 필터링 여부 확인
 const isFiltering = computed(() => {
-  return selectedCategory.value !== '';
+  return selectedCategory.value !== ''
 });
+
+// 필터링 적용
+const filterPosts = () => {
+  console.log('필터링 적용: 카테고리:', selectedCategory.value);
+};
+
 
 // 필터링된 게시물 목록
 const filteredPosts = computed(() => {
   return posts.value.filter(post => {
+
     // 카테고리 필터 확인
     return selectedCategory.value === '' || 
       (post.categories && post.categories.some(cat => cat.id === selectedCategory.value));
@@ -147,11 +155,12 @@ const filteredPosts = computed(() => {
 // 카테고리 설정
 const setCategory = (categoryId) => {
   selectedCategory.value = categoryId;
+  console.log("selectedCategory =", selectedCategory)
 };
 
 // 필터 초기화
 const resetFilters = () => {
-  selectedCategory.value = '';
+  selectedCategory.value = ''
 };
 
 
@@ -173,6 +182,7 @@ const getBlogPosts = () => {
   })
   .then(res => {
     posts.value = res.data;
+    console.log('posts=',posts.value)
     isLoading.value = false;
   })
   .catch(err => {

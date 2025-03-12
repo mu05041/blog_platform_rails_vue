@@ -38,11 +38,7 @@ export const useBlogStore = defineStore('blog', {
   },
   
   actions: {
-    // 추후 API에서 카테고리와 태그를 가져오는 기능을 구현할 수 있음
     fetchCategoriesAndTags() {
-      // API 호출 예시
-      // axios.get('/api/categories').then(res => { this.categories = res.data });
-      // axios.get('/api/tags').then(res => { this.tags = res.data });
     }
   }
 });

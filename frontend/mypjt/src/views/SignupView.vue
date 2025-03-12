@@ -103,8 +103,8 @@ function signUp() {
     passwordConfirmation: passwordConfirmation.value
   })
   .then(() => {
-    // 성공시 라우팅만 수행
-    router.push({ name: 'Home' })
+    console.log('signup success')
+    router.push({ name:'UserPosts', params:{username: authStore.user.username} })
   })
   .catch(error => {
     console.error('회원가입 오류:', error)
