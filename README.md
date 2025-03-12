@@ -42,6 +42,7 @@ Ruby on Rails와 Vue.js를 사용한 간단한 블로그 플랫폼입니다.
 - bcrypt 3.1.20
 
 ### セットアップ手順
+백엔드 설정
 ```bash
 # 저장소 클론
 git clone https://github.com/mu05041/blog_platform_rails_vue.git
@@ -54,8 +55,12 @@ bundle install
 rails db:create
 rails db:migrate
 rails db:seed
+```
 
+프론트엔드 설정
+``` bash
 # 프론트엔드 의존성 설치
+cd frontend/mypjt
 npm install
 npm install axios
 npm i pinia-plugin-persistedstate
