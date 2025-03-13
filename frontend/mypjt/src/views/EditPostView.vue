@@ -40,6 +40,40 @@
                 placeholder="내용을 입력하세요"
               ></textarea>
             </div>
+
+          <!-- 해시태그 입력 영역 -->
+          <div class="mb-3">
+            <label class="form-label">해시태그</label>
+            <div class="d-flex align-items-center mb-2">
+              <input 
+                type="text" 
+                class="form-control me-2" 
+                v-model="newTag" 
+                @keyup.enter="addTag"
+                placeholder="해시태그 입력 (엔터로 추가)"
+              >
+              <button type="button" class="btn btn-primary" @click="addTag">
+                추가
+              </button>
+            </div>
+            
+            <!-- 태그 목록 -->
+            <div class="d-flex flex-wrap gap-2 mt-2">
+              <span 
+                v-for="(tag, index) in postForm.tags" 
+                :key="index" 
+                class="badge bg-primary position-relative"
+              >
+                #{{ tag }}
+                <button 
+                  type="button" 
+                  class="btn-close btn-close-white position-absolute top-0 end-0" 
+                  style="font-size: 0.5rem; padding: 0.2rem;"
+                  @click="removeTag(index)"
+                ></button>
+              </span>
+            </div>
+          </div>
             
             <!-- 카테고리 선택 -->
             <div class="mb-3">
@@ -59,26 +93,8 @@
                 </div>
               </div>
             </div>
-            
-            <!-- 태그 선택 -->
-            <div class="mb-4">
-              <label class="form-label">태그</label>
-              <div class="d-flex flex-wrap">
-                <div v-for="tag in tags" :key="tag.id" class="form-check me-3">
-                  <input 
-                    class="form-check-input" 
-                    type="checkbox" 
-                    :id="`tag-${tag.id}`" 
-                    :value="tag.id" 
-                    v-model="postForm.tag_ids"
-                  >
-                  <label class="form-check-label" :for="`tag-${tag.id}`">
-                    {{ tag.name }}
-                  </label>
-                </div>
-              </div>
-            </div>
-            
+          
+
             <!-- 버튼 그룹 -->
             <div class="d-flex justify-content-between">
               <RouterLink :to="`/${username}/posts/${postId}`" class="btn btn-secondary">
@@ -115,7 +131,7 @@
     title: '',
     content: '',
     category_ids: [],
-    tag_ids: []
+    tags: [],
   });
   
   // 상태 관리
@@ -132,15 +148,28 @@
     { id: 5, name: 'Sports' },
     { id: 6, name: 'Music' }
   ]);
-  
-  const tags = ref([
-    { id: 1, name: 'Sunny' },
-    { id: 2, name: 'Cloudy' },
-    { id: 3, name: 'Rainy' },
-    { id: 4, name: 'Snowy' },
-    { id: 5, name: 'Windy' },
-    { id: 6, name: 'Stormy' }
-  ]);
+
+    // 새 태그 입력
+  const newTag = ref('');
+
+  // 태그 추가 메서드
+  const addTag = () => {
+    if (newTag.value.trim()) {
+      // 중복 태그 방지 및 공백 제거
+      const cleanedTag = newTag.value.trim().replace(/^#/, '');
+      
+      // 이미 존재하지 않는 태그만 추가
+      if (!postForm.value.tags.includes(cleanedTag)) {
+        postForm.value.tags.push(cleanedTag);
+        newTag.value = ''; // 입력 필드 초기화
+      }
+    }
+  };
+
+  // 태그 제거 메서드
+  const removeTag = (index) => {
+    postForm.value.tags.splice(index, 1);
+  };
   
   // 게시물 정보 가져오기
   const fetchPost = () => {
@@ -168,7 +197,7 @@
       }
       
       if (post.tags) {
-        postForm.value.tag_ids = post.tags.map(tag => tag.id);
+        postForm.value.tags = post.tags.map(tag => tag.name);
       }
       
       isLoading.value = false;
@@ -184,18 +213,29 @@
   const updatePost = () => {
     isSubmitting.value = true;
     error.value = '';
+
+    // 본문에서 해시태그 제거
+    const contentWithoutTags = postForm.value.content.replace(/\s*#\w+/g, '').trim();
+    
+    // 본문에서 추출된 태그들
+    const extractedTags = postForm.value.content.match(/#\w+/g)?.map(tag => tag.replace('#', '')) || [];
+    
+    // 태그 입력 필드의 태그와 본문 해시태그 병합 (중복 제거)
+    const allTags = [...new Set([...postForm.value.tags, ...extractedTags])];
+
     
     // 게시물 데이터 준비
     const postData = {
       post: {
         title: postForm.value.title,
-        content: postForm.value.content,
+        content: contentWithoutTags,
         published: true,
         category_ids: postForm.value.category_ids,
-        tag_ids: postForm.value.tag_ids
+        tag_ids: allTags
       }
     };
     
+    console.log("postData = ", postData)
     // API 요청
     axios({
       method: 'put',
