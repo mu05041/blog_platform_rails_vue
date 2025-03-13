@@ -48,8 +48,10 @@ class Api::V1::PostsController < ApplicationController
       # 카테고리 연결
       post.category_ids = params[:post][:category_ids] if params[:post][:category_ids]
       
-      # 태그 연결
-      post.tag_ids = params[:post][:tag_ids] if params[:post][:tag_ids]
+    # 태그 연결
+      if params[:post][:tag_ids].present?
+        post.tag_ids = params[:post][:tag_ids].map { |tag_name| Tag.find_or_create_by(name: tag_name).id }
+    end
       
       render json: post, status: :created
     else
@@ -62,7 +64,10 @@ class Api::V1::PostsController < ApplicationController
     if @post.update(post_params)
       # 카테고리와 태그 업데이트 추가
       @post.category_ids = params[:post][:category_ids] if params[:post][:category_ids]
-      @post.tag_ids = params[:post][:tag_ids] if params[:post][:tag_ids]
+      
+    # 콘텐츠에서 해시태그 추출 및 태그 연결
+      extracted_tags = extract_hashtags(@post.content)
+      @post.tag_ids = extracted_tags.map { |tag_name| Tag.find_or_create_by(name: tag_name).id } if extracted_tags.any?
       
       render json: @post
     else
@@ -77,7 +82,7 @@ class Api::V1::PostsController < ApplicationController
   end
   
   private
-  
+
   def set_post
     @post = Post.find(params[:id])
   end

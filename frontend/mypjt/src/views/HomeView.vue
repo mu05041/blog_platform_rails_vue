@@ -6,7 +6,7 @@
   <main class="container">
     <div class="welcome-message">
       <h1><span class="blue-dot"></span> Welcome to Blog <span class="blue-dot"></span></h1>
-      <p>A simple blog template with minimal design and blue accent points.</p>
+      <p>シンプルなブログです。青色がポイントです。ログインもしくは会員登録をしてください。ありがとうございます。</p>
     </div>
   </main>
 </template>

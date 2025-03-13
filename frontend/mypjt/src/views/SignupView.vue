@@ -107,7 +107,7 @@ function signUp() {
     router.push({ name:'UserPosts', params:{username: authStore.user.username} })
   })
   .catch(error => {
-    console.error('회원가입 오류:', error)
+    console.error('Sign Up Error:', error)
     
     // 에러 메시지 처리
     if (error.response && error.response.data) {

@@ -1,5 +1,19 @@
 <script setup>
 import { RouterLink, RouterView } from 'vue-router'
+import { useAuthStore } from '@/stores/auth'
+import { computed } from 'vue'
+
+// Use the auth store
+const authStore = useAuthStore()
+
+// Computed property to check if user is logged in
+const isLoggedIn = computed(() => authStore.user !== null)
+
+// Logout handler
+const handleLogout = () => {
+  authStore.logout()
+}
+
 </script>
 
 <template>
@@ -11,13 +25,20 @@ import { RouterLink, RouterView } from 'vue-router'
             <span class="fs-3 fw-bold blog-title">Blog</span>
           </RouterLink>
         </div>
+        <!-- 여기가 수정된 부분: col-md-6 div 안에 조건부 렌더링을 넣음 -->
         <div class="col-md-6 col-12 text-md-end text-center">
-          <RouterLink to="/login" class="btn btn-outline-primary me-2">Log In</RouterLink>
-          <RouterLink to="/signup" class="btn btn-primary">Sign Up</RouterLink>
+          <template v-if="!isLoggedIn">
+            <RouterLink to="/login" class="btn btn-outline-primary me-2">Log In</RouterLink>
+            <RouterLink to="/signup" class="btn btn-primary">Sign Up</RouterLink>
+          </template>
+          <template v-else>
+            <button @click="handleLogout" class="btn btn-outline-danger">Logout</button>
+          </template>
         </div>
       </div>
     </div>
   </header>
+
 
   <main>
     <RouterView />

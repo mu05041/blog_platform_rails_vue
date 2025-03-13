@@ -6,7 +6,7 @@
       <!-- 로딩 상태 -->
       <div v-if="isLoading && !error" class="text-center py-5">
         <div class="spinner-border text-primary" role="status">
-          <span class="visually-hidden">로딩 중...</span>
+          <span class="visually-hidden">now loading...</span>
         </div>
         <p class="mt-2">게시물을 불러오는 중입니다...</p>
       </div>
