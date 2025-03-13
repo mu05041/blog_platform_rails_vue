@@ -1,14 +1,14 @@
 <template>
     <div class="container py-4">
-      <!-- 오류 -->
+      <!-- エラー -->
       <div v-if="error" class="alert alert-danger">{{ error }}</div>
       
-      <!-- 로딩 상태 -->
+      <!-- ローディング状況 -->
       <div v-if="isLoading && !error" class="text-center py-5">
         <div class="spinner-border text-primary" role="status">
           <span class="visually-hidden">now loading...</span>
         </div>
-        <p class="mt-2">게시물을 불러오는 중입니다...</p>
+        <p class="mt-2">記事を読み込み中です...</p>
       </div>
       
       <!-- 게시물 내용 -->
@@ -20,7 +20,7 @@
             {{ formatDate(post.created_at) }}
           </div>
           
-          <!-- 카테고리 및 태그 -->
+          <!-- カテゴリとタグ -->
           <div v-if="post.categories && post.categories.length > 0" class="mb-2">
             <span v-for="category in post.categories" :key="category.id" 
                   class="badge bg-light text-dark me-1">
@@ -41,17 +41,17 @@
             {{ post.content }}
           </div>
           
-          <!-- 내 블로그일 경우 편집/삭제 버튼 표시 -->
+          <!-- 自分のブログの場合、編集・ 削除ボタンを表示-->
           <div v-if="isMyBlog" class="mt-4">
             <RouterLink :to="`/posts/${post.id}/edit`" class="btn btn-primary me-2">
-              수정
+              修正
             </RouterLink>
             <button @click="deletePost" class="btn btn-danger">삭제</button>
           </div>
           
           <div class="mt-4">
             <RouterLink :to="`/${username}/posts`" class="btn btn-secondary">
-              목록으로
+              リストへの
             </RouterLink>
           </div>
         </div>
@@ -73,27 +73,27 @@
   const error = ref(null);
   const isLoading = ref(true);
   
-  // URL에서 username과 id 가져오기
+  // URLからユーザー名とIDを取得
   const username = ref(route.params.username || '');
   const postId = ref(route.params.id || '');
   
-  // 내 블로그인지 확인
+  // 自分のブログかどうかを確認
   const isMyBlog = ref(false);
   
-  // 로그인 상태 확인 후 내 블로그 여부 설정
+  // ログイン状態を確認して自分のブログかどうかを設定
   if (authStore.user && username.value === authStore.user.username) {
     isMyBlog.value = true;
   }
   
-  // 게시물 로드
+  // 記事を読み込む読み込む
   const fetchPost = () => {
     isLoading.value = true;
     error.value = '';
     
-    // API 엔드포인트 설정
+    // APIエンドポイントを設定
     const endpoint = `${API_URL}/${username.value}/posts/${postId.value}`;
     
-    // 세션 기반 인증이므로 별도 헤더 불필요
+    // セッションベースの認証なので別途ヘッダーは不要
     const headers = {};
     
     axios({
@@ -107,26 +107,26 @@
     })
     .catch(err => {
       console.error('Error fetching post:', err);
-      error.value = err.response?.data?.error || '게시물을 불러오는 중 오류가 발생했습니다.';
+      error.value = err.response?.data?.error || '記事の読み込む中にエラーが発生しました。';
       isLoading.value = false;
     });
   }
   
   // 게시물 삭제
   const deletePost = () => {
-    if (!confirm('정말 이 게시물을 삭제하시겠습니까?')) return;
+    if (!confirm('本当にこの記事を削除しますか?')) return;
     
     axios.delete(`${API_URL}/posts/${post.value.id}`)
       .then(() => {
         router.push(`/${username.value}/posts`);
       })
       .catch(err => {
-        console.error('삭제 오류:', err);
-        alert('게시물 삭제에 실패했습니다.');
+        console.error('削除エラー:', err);
+        alert('記事の削除に失敗しました。');
       });
   }
   
-  // 날짜 포맷
+  // date format
   const formatDate = (dateString) => {
     if (!dateString) return '';
     const options = { year: 'numeric', month: 'long', day: 'numeric' };
@@ -144,7 +144,7 @@
     font-size: 1.1rem;
   }
   
-  /* 모바일 반응형 스타일 */
+  /* モバイルレスポンシブスタイル */
   @media (max-width: 576px) {
     h1 {
       font-size: 1.8rem;
