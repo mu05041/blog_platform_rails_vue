@@ -12,7 +12,9 @@ export const useAuthStore = defineStore('auth', () => {
     return axios({
       method: 'post',
       url: `${API_URL}/login`,
-      data: { email, password }
+      data: { email, password },
+      withCredentials: true
+
     })
     .then(res => {
       user.value = res.data.user
@@ -23,7 +25,9 @@ export const useAuthStore = defineStore('auth', () => {
   const logout = function () {
     axios({
       method: 'delete',
-      url: `${API_URL}/logout`
+      url: `${API_URL}/logout`,
+      withCredentials: true 
+
     })
     .then(res => {
       console.log(res.data)
@@ -44,7 +48,9 @@ export const useAuthStore = defineStore('auth', () => {
           password: userData.password,
           password_confirmation: userData.passwordConfirmation
         }
-      }
+      },
+      withCredentials: true  
+
     })
     .then(res => {
       user.value = res.data.user

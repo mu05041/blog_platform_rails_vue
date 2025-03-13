@@ -31,12 +31,7 @@ class Api::V1::PostsController < ApplicationController
         user: { only: [:id, :username] },
         categories: { only: [:id, :name] },
         tags: { only: [:id, :name] },
-        comments: {
-          include: {
-            user: { only: [:id, :username] }
-          }
         }
-      }
     )
   end
   
@@ -91,7 +86,7 @@ class Api::V1::PostsController < ApplicationController
     user = User.find_by(username: params[:username])
     
     if user
-      @post = user.posts.includes(:user, :categories, :tags, comments: :user)
+      @post = user.posts.includes(:user, :categories, :tags)
                  .find_by(id: params[:id])
       
       unless @post

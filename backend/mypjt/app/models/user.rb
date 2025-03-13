@@ -4,7 +4,6 @@ class User < ApplicationRecord
   
     # 연관 관계 설정
     has_many :posts
-    has_many :comments
   
     # 유효성 검사 추가
     validates :username, presence: true, uniqueness: true
