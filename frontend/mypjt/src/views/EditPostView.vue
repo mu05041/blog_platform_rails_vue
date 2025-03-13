@@ -139,15 +139,10 @@
   const isSubmitting = ref(false);
   const error = ref('');
   
-  // 카테고리 및 태그 목록 (고정 데이터)
-  const categories = ref([
-    { id: 1, name: 'Travel' },
-    { id: 2, name: 'Food' },
-    { id: 3, name: 'Lifestyle' },
-    { id: 4, name: 'Technology' },
-    { id: 5, name: 'Sports' },
-    { id: 6, name: 'Music' }
-  ]);
+  // store에서 카테고리 가져오기
+  import { useBlogStore } from '@/stores/blog';
+  const blogStore = useBlogStore();
+  const categories = computed(() => blogStore.categories);
 
     // 새 태그 입력
   const newTag = ref('');

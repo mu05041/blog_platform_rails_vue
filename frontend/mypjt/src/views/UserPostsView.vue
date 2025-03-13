@@ -145,10 +145,19 @@ const filterPosts = () => {
 // 필터링된 게시물 목록
 const filteredPosts = computed(() => {
   return posts.value.filter(post => {
+    
+    // 검색어 필터링 (제목과 내용에서 검색)
+    const searchMatch = searchQuery.value === '' || 
+    post.title.toLowerCase().includes(searchQuery.value.toLowerCase()) ||
+    post.content.toLowerCase().includes(searchQuery.value.toLowerCase());
+
 
     // 카테고리 필터 확인
-    return selectedCategory.value === '' || 
+    const categoryMatch = selectedCategory.value === '' || 
       (post.categories && post.categories.some(cat => cat.id === selectedCategory.value));
+    
+    // 두 조건 모두 만족해야 함
+    return searchMatch && categoryMatch;
   });
 });
 
