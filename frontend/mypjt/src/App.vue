@@ -17,28 +17,46 @@ const handleLogout = () => {
 </script>
 
 <template>
-  <header class="py-3 mb-4 border-bottom shadow-sm">
+  <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm py-2 mb-4 border-bottom">
     <div class="container">
-      <div class="row align-items-center">
-        <div class="col-md-6 col-12 mb-md-0 mb-3 text-md-start text-center">
-          <RouterLink to="/" class="text-decoration-none">
-            <span class="fs-3 fw-bold blog-title">Blog</span>
-          </RouterLink>
-        </div>
-        <!-- 여기가 수정된 부분: col-md-6 div 안에 조건부 렌더링을 넣음 -->
-        <div class="col-md-6 col-12 text-md-end text-center">
+      <!-- ロゴ -->
+      <RouterLink to="/" class="navbar-brand">
+        <span class="fs-3 fw-bold blog-title">Blog</span>
+      </RouterLink>
+      
+      <!-- ハンバーガーボタン (モバイルでのみ表示)  -->
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" 
+              data-bs-target="#navbarNav" aria-controls="navbarNav" 
+              aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      
+      <!-- メニューアイテム (モバイルでは折りたたまれ、mdサイズ以上では展開される)  -->
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto">
           <template v-if="!isLoggedIn">
-            <RouterLink to="/login" class="btn btn-outline-primary me-2">Log In</RouterLink>
-            <RouterLink to="/signup" class="btn btn-primary">Sign Up</RouterLink>
+            <li class="nav-item">
+              <RouterLink to="/login" class="nav-link btn btn-outline-primary me-md-2 mb-2 mb-md-0">
+                Log In
+              </RouterLink>
+            </li>
+            <li class="nav-item">
+              <RouterLink to="/signup" class="nav-link btn btn-primary">
+                Sign Up
+              </RouterLink>
+            </li>
           </template>
           <template v-else>
-            <button @click="handleLogout" class="btn btn-outline-danger">Logout</button>
+            <li class="nav-item">
+              <button @click="handleLogout" class="nav-link btn btn-outline-danger">
+                Logout
+              </button>
+            </li>
           </template>
-        </div>
+        </ul>
       </div>
     </div>
-  </header>
-
+  </nav>
 
   <main>
     <RouterView />
