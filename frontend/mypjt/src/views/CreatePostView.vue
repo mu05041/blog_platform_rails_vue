@@ -105,7 +105,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, computed } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
 import axios from 'axios';
 import { useAuthStore } from '@/stores/auth';
@@ -152,15 +152,12 @@ const removeTag = (index) => {
 const isSubmitting = ref(false);
 const error = ref('');
 
-// 카테고리 목록 (고정 데이터)
-const categories = ref([
-  { id: 1, name: 'Travel' },
-  { id: 2, name: 'Food' },
-  { id: 3, name: 'Lifestyle' },
-  { id: 4, name: 'Technology' },
-  { id: 5, name: 'Sports' },
-  { id: 6, name: 'Music' }
-]);
+// store에서 카테고리 가져오기
+import { useBlogStore } from '@/stores/blog';
+const blogStore = useBlogStore();
+const categories = computed(() => blogStore.categories);
+const tags = computed(() => blogStore.tags);
+
 
 // 게시물 생성 요청
 const createPost = () => {
