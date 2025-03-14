@@ -1,39 +1,39 @@
 <template>
   <div class="container py-4">
-    <!-- 블로그 헤더 -->
+    <!-- ブログヘッダー -->
     <div class="row mb-4">
       <div class="col-12">
-        <h2 class="text-center fw-bold blog-title">{{ `${username}의 블로그` }}</h2>
-        <p class="text-center text-muted">{{ isMyBlog ? '내 블로그 관리' : '공개 블로그 게시물 목록' }}</p>
+        <h2 class="text-center fw-bold blog-title">{{ `${username}のブログ` }}</h2>
+        <p class="text-center text-muted">{{ isMyBlog ? 'マイブログ管理' : '공개 블로그 게시물 목록' }}</p>
         
-        <!-- 내 블로그일 경우에만 보이는 글쓰기 버튼 -->
+        <!-- 自分のブログの場合のみ表示される投稿ボタン -->
         <div v-if="isMyBlog" class="text-center mt-3">
           <RouterLink to="/posts/create" class="btn btn-success">
-            새 게시물 작성
+            新規投稿
           </RouterLink>
         </div>
       </div>
     </div>
 
-      <!-- 검색 및 필터링 UI -->
+      <!-- 検索とフィルタリングUI -->
         <div class="row mb-4">
       <div class="col-md-6 mb-3 mb-md-0">
         <div class="input-group">
           <input 
             type="text" 
             class="form-control" 
-            placeholder="게시물 검색..." 
+            placeholder="記事を検索..." 
             v-model="searchQuery"
             @input="filterPosts"
           >
           <button class="btn btn-outline-secondary" type="button" @click="filterPosts">
-            <i class="bi bi-search"></i> 검색
+            <i class="bi bi-search"></i> 検索
           </button>
         </div>
       </div>
       <div class="col-md-6">
         <select class="form-select" v-model="selectedCategory" @change="filterPosts">
-          <option value="">모든 카테고리</option>
+          <option value="">全てのカテゴリ</option>
           <option v-for="category in categories" :key="category.id" :value="category.id">
             {{ category.name }}
           </option>
@@ -42,25 +42,25 @@
     </div>
     
   
-    <!-- 로딩 상태 -->
+    <!-- ローディング状態 -->
     <div v-if="isLoading" class="text-center py-5">
       <div class="spinner-border text-primary" role="status">
-        <span class="visually-hidden">로딩 중...</span>
+        <span class="visually-hidden">読み込み中...</span>
       </div>
-      <p class="mt-2">게시물을 불러오는 중입니다...</p>
+      <p class="mt-2">記事をロード中....</p>
     </div>
 
-    <!-- 오류 메시지 -->
+    <!-- エラーメッセージ -->
     <div v-else-if="error" class="alert alert-danger" role="alert">
       {{ error }}
     </div>
 
-    <!-- 게시물 없음 -->
+    <!-- 記事がない場合 -->
     <div v-else-if="posts.length === 0" class="text-center py-5">
-      <p>등록된 게시물이 없습니다.</p>
+      <p>まだ投稿がありません。</p>
     </div>
 
-    <!-- 블로그 게시물 목록 -->
+    <!-- ブログ投稿リスト -->
     <div v-else class="row">
       <div v-for="post in filteredPosts" :key="post.id" class="col-md-6 mb-4">
         <div class="card w-100 h-100 shadow-sm">
@@ -85,7 +85,7 @@
             <div class="d-flex justify-content-between align-items-center">
               <small class="text-muted">{{ formatDate(post.created_at) }}</small>
               <RouterLink :to="`/${username}/posts/${post.id}`" class="btn btn-primary">
-                더 보기
+                詳細を見る
               </RouterLink>
             </div>
           </div>
@@ -104,84 +104,84 @@ import { useAuthStore } from '@/stores/auth';
 const route = useRoute();
 const authStore = useAuthStore();
 const API_URL = 'http://localhost:3000/api/v1';
-// 세션 쿠키로 인증을 관리하므로 axios 요청 시 credentials 포함
+// セッションクッキーによる認証管理のため、axiosリクエスト時に認証情報を含める
 axios.defaults.withCredentials = true;
 const posts = ref([]);
 const isLoading = ref(true);
 const error = ref('');
 
-// URL에서 username 가져오기
+// URLからユーザー名を取得
 const username = ref(route.params.username || '');
 
-// 내 블로그인지 확인
+// 自分のブログかどうかを確認
 const isMyBlog = ref(false);
 
-// 로그인 상태 확인 후 내 블로그 여부 설정
+// ログイン状態を確認し、自分のブログかどうかを設定
 if (authStore.user && username.value === authStore.user.username) {
   isMyBlog.value = true;
 }
 
-// store에서 카테고리 가져오기
+// storeからカテゴリ取得
 import { useBlogStore } from '@/stores/blog';
 const blogStore = useBlogStore();
 const categories = computed(() => blogStore.categories);
 const tags = computed(() => blogStore.tags);
 
-// 필터링 및 검색 상태
+// フィルタリングと検索の状態
 const selectedCategory = ref('');
 const searchQuery = ref('')
 
-// 필터링 여부 확인
+// フィルタリングの有無を確認
 const isFiltering = computed(() => {
   return selectedCategory.value !== ''
 });
 
-// 필터링 적용
+// フィルタリングを適用
 const filterPosts = () => {
   console.log('필터링 적용: 카테고리:', selectedCategory.value);
 };
 
 
-// 필터링된 게시물 목록
+// フィルタリングされた投稿リスト
 const filteredPosts = computed(() => {
   return posts.value.filter(post => {
     
-    // 검색어 필터링 (제목과 내용에서 검색)
+    // 検索ワードのフィルタリング（タイトルと本文から検索）
     const searchMatch = searchQuery.value === '' || 
     post.title.toLowerCase().includes(searchQuery.value.toLowerCase()) ||
     post.content.toLowerCase().includes(searchQuery.value.toLowerCase());
 
 
-    // 카테고리 필터 확인
+    // カテゴリフィルターの確認
     const categoryMatch = selectedCategory.value === '' || 
       (post.categories && post.categories.some(cat => cat.id === selectedCategory.value));
     
-    // 두 조건 모두 만족해야 함
+    // 両方の条件を満たす必要がある
     return searchMatch && categoryMatch;
   });
 });
 
-// 카테고리 설정
+// カテゴリの設定
 const setCategory = (categoryId) => {
   selectedCategory.value = categoryId;
   console.log("selectedCategory =", selectedCategory)
 };
 
-// 필터 초기화
+// フィルターのリセット
 const resetFilters = () => {
   selectedCategory.value = ''
 };
 
 
-// 게시물 정보 가져오기
+// 記事情報の取得
 const getBlogPosts = () => {
   isLoading.value = true;
   error.value = '';
   
-  // API 엔드포인트 설정
+  // APIエンドポイントの設定
   const endpoint = `${API_URL}/${username.value}/posts`;
   
-  // 세션 기반 인증이므로 별도 헤더 불필요
+  // セッションベースの認証のため、追加のヘッダーは不要
   const headers = {};
   
   axios({
@@ -201,14 +201,14 @@ const getBlogPosts = () => {
   });
 };
 
-// 날짜 포맷
+// date format
 const formatDate = (dateString) => {
   if (!dateString) return '';
   const options = { year: 'numeric', month: 'long', day: 'numeric' };
   return new Date(dateString).toLocaleDateString('ko-KR', options);
 };
 
-// 내용 요약
+// コンテンツの要約
 const createExcerpt = (content, maxLength = 100) => {
   if (!content) return '';
   if (content.length <= maxLength) return content;
@@ -221,7 +221,6 @@ onMounted(() => {
 </script>
 
 <style scoped>
-/* Bootstrap이 포함되어 있으므로 필요한 스타일만 추가 */
 .blog-title {
   color: #333;
 }
