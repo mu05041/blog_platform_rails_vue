@@ -1,60 +1,79 @@
 <template>
-  <div>
-    <h2>Sign Up</h2>
-    <form @submit.prevent="signUp">
-      <div>
-        <label for="username">User Name</label>
-        <input
-           id="username"
-           v-model="username"
-           type="text"
-           required
-           placeholder="Put your name"
-        >
+  <div class="container py-5">
+    <div class="row justify-content-center">
+      <div class="col-md-6 col-lg-5 col-sm-10">
+        <div class="card shadow-sm">
+          <div class="card-body p-4">
+            <h2 class="text-center mb-4 text-primary">Sign Up</h2>
+            <form @submit.prevent="signUp">
+              <div class="mb-3">
+                <label for="username" class="form-label">User Name</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="username"
+                  v-model="username"
+                  placeholder="Please put your name"
+                  required
+                />
+              </div>
+              
+              <div class="mb-3">
+                <label for="email" class="form-label">Email</label>
+                <input
+                  type="email"
+                  class="form-control"
+                  id="email"
+                  v-model="email"
+                  placeholder="Please put your email"
+                  aria-describedby="emailHelp"
+                  required
+                />
+              </div>
+              
+              <div class="mb-3">
+                <label for="password" class="form-label">Password</label>
+                <input
+                  type="password"
+                  class="form-control"
+                  id="password"
+                  v-model="password"
+                  placeholder="Please put password"
+                  required
+                />
+              </div>
+              
+              <div class="mb-3">
+                <label for="password-confirmation" class="form-label">Confirm Password</label>
+                <input
+                  type="password"
+                  class="form-control"
+                  id="password-confirmation"
+                  v-model="passwordConfirmation"
+                  placeholder="Please confirm your password"
+                  required
+                />
+              </div>
+              
+              <!-- Error Message -->
+              <div v-if="errorMessage" class="alert alert-danger mb-3">
+                {{ errorMessage }}
+              </div>
+              
+              <div class="d-grid gap-2">
+                <button type="submit" class="btn btn-primary py-2" :disabled="isLoading">
+                  {{ isLoading ? 'Processing...' : 'Sign Up' }}
+                </button>
+              </div>
+            </form>
+            <div class="login-section text-center mt-4">
+              <p class="mb-1">Already have an account?</p>
+              <router-link to="/login" class="btn btn-outline-primary btn-sm">Login</router-link>
+            </div>
+          </div>
+        </div>
       </div>
-       
-      <div>
-        <label for="email">Email</label>
-        <input
-           id="email"
-           v-model="email"
-           type="email"
-           required
-           placeholder="Put your Email"
-        >
-      </div>
-       
-      <div>
-        <label for="password">PassWord</label>
-        <input
-           id="password"
-           v-model="password"
-           type="password"
-           required
-           placeholder="Put PassWord"
-        >
-      </div>
-       
-      <div>
-        <label for="password-confirmation">Confirm PassWord</label>
-        <input
-           id="password-confirmation"
-           v-model="passwordConfirmation"
-           type="password"
-           required
-           placeholder="비밀번호를 다시 입력하세요"
-        >
-      </div>
-       
-      <!-- Error Message -->
-      <div v-if="errorMessage" style="color: red;">
-        {{ errorMessage }}
-      </div>
-       
-      <button type="submit" :disabled="isLoading">
-        {{ isLoading ? '처리 중...' : 'Sign Up' }}
-      </button>
-    </form>
+    </div>
   </div>
 </template>
 
@@ -84,18 +103,17 @@ function signUp() {
   
   // Basic validation
   if (!username.value || !email.value || !password.value || !passwordConfirmation.value) {
-    errorMessage.value = 'fill all field.'
+    errorMessage.value = 'Please fill all fields.'
     return
   }
- 
+  
   if (password.value !== passwordConfirmation.value) {
-    errorMessage.value = 'Not match password'
+    errorMessage.value = 'Passwords do not match'
     return
   }
- 
+  
   isLoading.value = true
   
-  // Promise 방식으로 구현
   authStore.signup({
     username: username.value,
     email: email.value,
@@ -109,11 +127,11 @@ function signUp() {
   .catch(error => {
     console.error('Sign Up Error:', error)
     
-    // 에러 메시지 처리
+    // Error message handling
     if (error.response && error.response.data) {
       errorMessage.value = error.response.data.errors?.[0] || 'Sign Up failed.'
     } else {
-      errorMessage.value = '회원가입 처리 중 오류가 발생했습니다.'
+      errorMessage.value = 'An error occurred during sign up process.'
     }
   })
   .finally(() => {
@@ -121,3 +139,21 @@ function signUp() {
   })
 }
 </script>
+
+<style scoped>
+.card {
+  border-radius: 10px;
+  border: none;
+}
+
+/* mobile */
+@media (max-width: 576px) {
+  .card {
+    border-radius: 8px;
+  }
+  
+  .card-body {
+    padding: 1.5rem;
+  }
+}
+</style>
