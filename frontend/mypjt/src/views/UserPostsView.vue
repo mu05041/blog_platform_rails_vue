@@ -196,7 +196,7 @@ const getBlogPosts = () => {
   })
   .catch(err => {
     console.error('Error fetching posts:', err);
-    error.value = err.response?.data?.error || '게시물을 불러오는 중 오류가 발생했습니다.';
+    error.value = err.response?.data?.error || '記事を読み込む中にエラーが発生しました';
     isLoading.value = false;
   });
 };
@@ -233,7 +233,7 @@ onMounted(() => {
   transform: translateY(-5px);
 }
 
-/* 모바일 반응형 스타일 */
+/* モバイルレスポンシブ */
 @media (max-width: 576px) {
   .card {
     margin-bottom: 1rem;

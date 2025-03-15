@@ -1,57 +1,57 @@
 <template>
   <div class="container py-4">
-    <h2 class="text-center mb-4">새 게시물 작성</h2>
+    <h2 class="text-center mb-4">新規投稿</h2>
     
-    <!-- 오류 메시지 -->
+    <!-- エラーメッセージ -->
     <div v-if="error" class="alert alert-danger">{{ error }}</div>
 
-    <!-- 게시물 작성 폼 -->
+    <!-- 投稿フォーム -->
     <div class="row">
       <div class="col-lg-8 col-md-10 mx-auto">
         <form @submit.prevent="createPost">
-          <!-- 제목 입력 -->
+          <!-- タイトル入力 -->
           <div class="mb-3">
-            <label for="title" class="form-label">제목</label>
+            <label for="title" class="form-label">title</label>
             <input 
               type="text" 
               class="form-control" 
               id="title" 
               v-model="postForm.title" 
               required 
-              placeholder="제목을 입력하세요"
+              placeholder="please input title"
             >
           </div>
           
-          <!-- 내용 입력 -->
+          <!-- コンテンツ入力 -->
           <div class="mb-3">
-            <label for="content" class="form-label">내용</label>
+            <label for="content" class="form-label">content</label>
             <textarea 
               class="form-control" 
               id="content" 
               v-model="postForm.content" 
               rows="10" 
               required 
-              placeholder="내용을 입력하세요"
+              placeholder="内容を入力してください"
             ></textarea>
           </div>
 
-          <!-- 해시태그 입력 영역 -->
+          <!-- タグ入力 -->
           <div class="mb-3">
-            <label class="form-label">해시태그</label>
+            <label class="form-label">タグ</label>
             <div class="d-flex align-items-center mb-2">
               <input 
                 type="text" 
                 class="form-control me-2" 
                 v-model="newTag" 
                 @keyup.enter="addTag"
-                placeholder="해시태그 입력 (엔터로 추가)"
+                placeholder="タグを入力"
               >
               <button type="button" class="btn btn-primary" @click="addTag">
-                추가
+                タグを追加
               </button>
             </div>
             
-            <!-- 태그 목록 -->
+            <!-- タグ一覧 -->
             <div class="d-flex flex-wrap gap-2 mt-2">
               <span 
                 v-for="(tag, index) in postForm.tags" 
@@ -69,9 +69,9 @@
             </div>
           </div>
           
-          <!-- 카테고리 선택 -->
+          <!-- カテゴリ選択 -->
           <div class="mb-3">
-            <label class="form-label">카테고리</label>
+            <label class="form-label">カテゴリ</label>
             <div class="d-flex flex-wrap">
               <div v-for="category in categories" :key="category.id" class="form-check me-3">
                 <input 
@@ -88,14 +88,14 @@
             </div>
           </div>
           
-          <!-- 버튼 그룹 -->
+          <!-- ボタン -->
           <div class="d-flex justify-content-between">
             <RouterLink :to="`/${username}/posts`" class="btn btn-secondary">
-              취소
+              キャンセル
             </RouterLink>
             <button type="submit" class="btn btn-primary" :disabled="isSubmitting">
               <span v-if="isSubmitting" class="spinner-border spinner-border-sm me-1"></span>
-              등록
+              投稿する
             </button>
           </div>
         </form>
@@ -115,10 +115,10 @@ const route = useRoute();
 const authStore = useAuthStore();
 const API_URL = 'http://localhost:3000/api/v1';
 
-// 사용자 이름
+// ユーザー名
 const username = ref(authStore.user?.username || '');
 
-// 게시물 폼 데이터
+// 投稿フォームのデータ
 const postForm = ref({
   title: '',
   content: '',
@@ -126,16 +126,16 @@ const postForm = ref({
   tags: []
 });
 
-// 새 태그 입력
+// 新しいタグの入力
 const newTag = ref('');
 
-// 태그 추가 메서드
+// タグを追加するメソッド
 const addTag = () => {
   if (newTag.value.trim()) {
-    // 중복 태그 방지 및 공백 제거
+    // 重複防止および空白削除
     const cleanedTag = newTag.value.trim().replace(/^#/, '');
     
-    // 이미 존재하지 않는 태그만 추가
+    // すでに存在しないタグのみ追加
     if (!postForm.value.tags.includes(cleanedTag)) {
       postForm.value.tags.push(cleanedTag);
       newTag.value = ''; // 입력 필드 초기화
@@ -143,38 +143,38 @@ const addTag = () => {
   }
 };
 
-// 태그 제거 메서드
+// タグを削除するメソッド
 const removeTag = (index) => {
   postForm.value.tags.splice(index, 1);
 };
 
-// 상태 관리
+// 投稿の状態管理
 const isSubmitting = ref(false);
 const error = ref('');
 
-// store에서 카테고리 가져오기
+// storeからカテゴリを取得
 import { useBlogStore } from '@/stores/blog';
 const blogStore = useBlogStore();
 const categories = computed(() => blogStore.categories);
 const tags = computed(() => blogStore.tags);
 
 
-// 게시물 생성 요청
+// 投稿を作成する処理
 const createPost = () => {
   isSubmitting.value = true;
   error.value = '';
   
-  // 본문에서 해시태그 제거
+  // 本文からタグを削除
   const contentWithoutTags = postForm.value.content.replace(/\s*#\w+/g, '').trim();
   
-  // 본문에서 추출된 태그들
+  // 本文から抽出されたタグを取得
   const extractedTags = postForm.value.content.match(/#\w+/g)?.map(tag => tag.replace('#', '')) || [];
   
-  // 태그 입력 필드의 태그와 본문 해시태그 병합 (중복 제거)
+  // 入力フィールドのタグと本文のタグを統合（重複を除外）
   const allTags = [...new Set([...postForm.value.tags, ...extractedTags])];
 
   
-  // 게시물 데이터 준비
+  // APIへ送信するデータ
   const postData = {
     post: {
       title: postForm.value.title,
@@ -185,20 +185,20 @@ const createPost = () => {
     }
   };
   
-  // API 요청
+  // APIリクエスト
   axios.post(`${API_URL}/posts`, postData)
     .then(() => {
       router.push(`/${username.value}/posts`);
     })
     .catch(err => {
-      console.error('게시물 등록 오류:', err);
-      error.value = err.response?.data?.error || '게시물 등록에 실패했습니다';
+      console.error('投稿エラー:', err);
+      error.value = err.response?.data?.error || '投稿に失敗しました';
       isSubmitting.value = false;
     });
 };
 
 onMounted(() => {
-  // 카테고리는 이미 로컬에 정의되어 있음
+  // カテゴリはすでにローカルに定義済み
 });
 </script>
 
