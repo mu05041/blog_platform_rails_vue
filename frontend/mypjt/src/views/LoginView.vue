@@ -29,6 +29,12 @@
                   required
                 />
               </div>
+              
+              <div v-if="errorMessage" class="alert alert-danger mb-3">
+                {{ errorMessage }}
+              </div>
+
+
               <div class="d-grid gap-2">
                 <button type="submit" class="btn btn-primary py-2">Login</button>
               </div>
@@ -51,6 +57,7 @@ import { useAuthStore } from '@/stores/auth'
 
 const email = ref('')
 const password = ref('')
+const errorMessage = ref('')
 const router = useRouter()
 const authStore = useAuthStore()
 
@@ -58,7 +65,16 @@ const logIn = () => {
   console.log('Login Success')  
   authStore.login(email.value, password.value)
     .then(() => router.push({ name:'UserPosts', params:{username: authStore.user.username}}))
-    .catch(error => console.error('Login failed:', error))
+    .catch(error =>{
+      if (error.response && error.response.data && error.response.data.error) {
+        errorMessage.value = error.response.data.error
+      } else if (error.message) {
+        errorMessage.value = error.message
+      } else {
+        errorMessage.value = 'メールアドレスまたはパスワードが一致しません'
+      }
+
+    })
 }
 </script>
 

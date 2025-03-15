@@ -20,6 +20,11 @@ export const useAuthStore = defineStore('auth', () => {
       user.value = res.data.user
       return res.data
     })
+    .catch(err => {
+      if(err.response && err.response.status === 401) {
+        throw new Error("メールアドレスまたはパスワードが一致しません")
+      }
+    })
   }
 
   const logout = function () {
