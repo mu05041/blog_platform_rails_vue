@@ -4,7 +4,7 @@
     <div class="row mb-4">
       <div class="col-12">
         <h2 class="text-center fw-bold blog-title">{{ `${username}のブログ` }}</h2>
-        <p class="text-center text-muted">{{ isMyBlog ? 'マイブログ管理' : '공개 블로그 게시물 목록' }}</p>
+        <p class="text-center text-muted">{{ isMyBlog ? 'マイブログ管理' : '公開ブログ投稿リスト' }}</p>
         
         <!-- 自分のブログの場合のみ表示される投稿ボタン -->
         <div v-if="isMyBlog" class="text-center mt-3">
@@ -138,7 +138,7 @@ const isFiltering = computed(() => {
 
 // フィルタリングを適用
 const filterPosts = () => {
-  console.log('필터링 적용: 카테고리:', selectedCategory.value);
+  console.log('フィルター適用: カテゴリー:', selectedCategory.value);
 };
 
 

@@ -11,20 +11,20 @@
         <form @submit.prevent="createPost">
           <!-- タイトル入力 -->
           <div class="mb-3">
-            <label for="title" class="form-label">title</label>
+            <label for="title" class="form-label">タイトル</label>
             <input 
               type="text" 
               class="form-control" 
               id="title" 
               v-model="postForm.title" 
               required 
-              placeholder="please input title"
+              placeholder="タイトルを入力してください"
             >
           </div>
           
           <!-- コンテンツ入力 -->
           <div class="mb-3">
-            <label for="content" class="form-label">content</label>
+            <label for="content" class="form-label">コンテンツ</label>
             <textarea 
               class="form-control" 
               id="content" 
@@ -45,8 +45,9 @@
                 v-model="newTag" 
                 @keyup.enter="addTag"
                 placeholder="タグを入力"
+                style="max-width: 80%;"
               >
-              <button type="button" class="btn btn-primary" @click="addTag">
+              <button type="button" class="btn btn-primary" @click="addTag" >
                 タグを追加
               </button>
             </div>

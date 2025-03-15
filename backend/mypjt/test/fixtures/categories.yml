@@ -1,9 +1,15 @@
 # Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
 one:
-  name: MyString
-  description: MyText
-
+  id: 1
+  name: Category 1
+  description: First category description
+  created_at: <%= Time.current %>
+  updated_at: <%= Time.current %>
+  
 two:
-  name: MyString
-  description: MyText
+  id: 2
+  name: Category 2
+  description: Second category description
+  created_at: <%= Time.current %>
+  updated_at: <%= Time.current %>
