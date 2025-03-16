@@ -30,7 +30,7 @@ class Api::V1::AuthControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "should logout" do
-    # 먼저 로그인
+    # 先にログイン
     post api_v1_login_path, params: {
       email: @user.email,
       password: 'password'

@@ -2,7 +2,7 @@
 Ruby on RailsとVue.jsを使用したシンプルなブログプラットフォームです。
 
 ## 🌐 プロジェクトの説明
-このプロジェクトはdataXの課題テストとして開発されたブログプラットフォームです。ユーザーは記事の作成、編集、削除ができ、カテゴリーを通じて記事を分類することができます。記事にタグを付けることもできます。
+このプロジェクトは課題テストとして開発されたブログプラットフォームです。ユーザーは記事の作成、編集、削除ができ、カテゴリーを通じて記事を分類することができます。記事にタグを付けることもできます。
 
 ## 💻 技術スタック
 - バックエンド: Ruby on Rails
@@ -23,7 +23,7 @@ Ruby on RailsとVue.jsを使用したシンプルなブログプラットフォ�
    - タグの追加、削除機能
 
 2. **検索・フィルタリング機能**
-   - Vue.jsを活用ショタカテゴリ別のフィルタリング
+   - Vue.jsを活用したカテゴリ別のフィルタリング
    - 記事検索機能の実装
 
 3. **ユーザー認証機能**
@@ -51,7 +51,7 @@ Ruby on RailsとVue.jsを使用したシンプルなブログプラットフォ�
 git clone https://github.com/mu05041/blog_platform_rails_vue.git
 cd backend/mypjt
 
-# バクエンド依存関係をインストール
+# バックエンド依存関係をインストール
 bundle install
 
 # データベース設定
@@ -70,23 +70,24 @@ npm i pinia-plugin-persistedstate
 npm install bootstrap-vue-3
 
 
-# セーバー起動
-rails s  # バクエンドサーバ
+# サーバー起動
+rails s  # バックエンド
 npm run dev  # フロントエンドサーバ
 ```
 
 ##  🧪 テスト
 ### テストフレームワーク
 - Minitest (Ruby on Railsデフォルトのテストフレームワーク)
-### 테스트 실행 방법
+### テスト実行方法
 ```bash
-# 全てのテストを実行
+# 特定のコントローラーテストを実行
 rails test
 
-# 特定のコントローラーテストを実行
-rails test 
+# Windows 環境の場合
 rails test test\controllers\api\v1\posts_controller_test.rb
 
+# Linux/Mac 環境の場合
+rails test test/controllers/api/v1/posts_controller_test.rb
 ```
 
 ## 🔐 テストアカウント情報
@@ -97,32 +98,32 @@ rails test test\controllers\api\v1\posts_controller_test.rb
 
 
 ## 任意で工夫したポイント
-- ERD精度：テーブル間のリレーションを正確に設定。POSTとCATEGOREIS、POSTとTAGの間にM:N関係を構築。
-- REST API設計：設計段階で作成したAPI仕様を厳密に遵守。
-- フロントエンド状態管理: ログイン/会員登録とカテゴリマッピング情報をPiniaで管理。
+- **ERD設計**: M:N関係を適切に管理するため、中間テーブル（categories_posts, posts_tags）を設計しました。
+- **REST API設計**: 設計段階で作成したAPI仕様を厳密に遵守し、一貫性のあるエンドポイントを実装しました。
+- **フロントエンド状態管理**: ログイン情報の永続化のため、Piniaのpersisted stateを活用しました。
 
 
 ## 📸 スクリーンショット
 
-### 메인페이지
+### メインページ
 - 記事リスト <br>
 <img src="./images/postlist.png" width="70%"/>
 - モバイル <br>
-<img src="./images/mobile.png"/>
+<img src="./images/mobile.png" height="50%"/>
 
 ### 記事作成画面
-- 글 작성 폼 <br>
+- 記事作成フォーム  <br>
 <img src="./images/NewPost.png" width="70%"/>
 
 
-### 사용자인증화면
+### ユーザー認証画面
 - ログインページ <br>
 <img src="./images/login.png" width="50%"/>
 - ユーザー登録ページ <br>
 <img src="./images/signup.png" width="50%"/>
 
 ### 기능 시연
-- 반응형 레이아웃 <br>
+- レスポンシブレイアウト <br>
 <img src="./images/responsive.gif"/>
 
 ## 📑 システムドキュメント
