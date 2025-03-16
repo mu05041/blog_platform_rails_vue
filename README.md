@@ -107,7 +107,7 @@ rails test test\controllers\api\v1\posts_controller_test.rb
 ### 메인페이지
 - 記事リスト <br>
 <img src="./images/postlist.png" width="70%"/>
-- モバイルレスポンシブ <br>
+- モバイル <br>
 <img src="./images/mobile.png"/>
 
 ### 記事作成画面
@@ -122,12 +122,8 @@ rails test test\controllers\api\v1\posts_controller_test.rb
 <img src="./images/signup.png" width="50%"/>
 
 ### 기능 시연
-- 카테고리별 필터링
-
-- 검색 기능 사용예시
-
 - 반응형 레이아웃 <br>
-<img src="./images/responsive.gif" width="50%"/>
+<img src="./images/responsive.gif"/>
 
 ## 📑 システムドキュメント
 👉[API仕様およびERD](https://capricious-algebra-cf0.notion.site/DataX-1b2aaefa04e680d1a397c4a5243261a7)
