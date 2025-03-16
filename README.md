@@ -122,7 +122,7 @@ rails test test/controllers/api/v1/posts_controller_test.rb
 - ユーザー登録ページ <br>
 <img src="./images/signup.png" width="50%"/>
 
-### 기능 시연
+### 機能デモ
 - レスポンシブレイアウト <br>
 <img src="./images/responsive.gif"/>
 
