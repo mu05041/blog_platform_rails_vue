@@ -46,12 +46,12 @@
             <RouterLink :to="`/posts/${post.id}/edit`" class="btn btn-primary me-2">
               修正
             </RouterLink>
-            <button @click="deletePost" class="btn btn-danger">삭제</button>
+            <button @click="deletePost" class="btn btn-danger">削除</button>
           </div>
           
           <div class="mt-4">
             <RouterLink :to="`/${username}/posts`" class="btn btn-secondary">
-              リストへの
+              リストへ
             </RouterLink>
           </div>
         </div>

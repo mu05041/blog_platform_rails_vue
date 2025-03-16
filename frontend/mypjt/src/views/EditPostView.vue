@@ -1,6 +1,6 @@
 <template>
     <div class="container py-4">
-      <h2 class="text-center mb-4">게시물 수정</h2>
+      <h2 class="text-center mb-4">記事修正</h2>
       
       <!-- エラーメッセージ -->
       <div v-if="error" class="alert alert-danger">{{ error }}</div>
@@ -43,7 +43,7 @@
 
           <!-- タグ入力エリア -->
           <div class="mb-3">
-            <label class="form-label">해시태그</label>
+            <label class="form-label">タグ</label>
             <div class="d-flex align-items-center mb-2">
               <input 
                 type="text" 

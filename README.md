@@ -106,11 +106,20 @@ rails test test\controllers\api\v1\posts_controller_test.rb
 
 ### 메인페이지
 - 記事リスト <br>
-<img src="./images/postlist.png"/>
+<img src="./images/postlist.png" width="70%"/>
 - モバイルレスポンシブ <br>
 <img src="./images/mobile.png"/>
 
-                                                            
+### 記事作成画面
+- 글 작성 폼 <br>
+<img src="./images/NewPost.png" width="70%"/>
+
+
+### 사용자 인증 화면                                 
+- ログインページ <br>
+<img src="./images/login.png" width="50%"/>
+- ユーザー登録ページ <br>
+<img src="./images/signup.png" width="50%"/>
 
 
 ## 📑 システムドキュメント
