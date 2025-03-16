@@ -97,7 +97,7 @@ rails test test/controllers/api/v1/posts_controller_test.rb
 - パスワード: `password123`
 
 
-## 任意で工夫したポイント
+## 📖 任意で工夫したポイント
 - **ERD設計**: M:N関係を適切に管理するため、中間テーブル（categories_posts, posts_tags）を設計しました。
 - **REST API設計**: 設計段階で作成したAPI仕様を厳密に遵守し、一貫性のあるエンドポイントを実装しました。
 - **フロントエンド状態管理**: ログイン情報の永続化のため、Piniaのpersisted stateを活用しました。
