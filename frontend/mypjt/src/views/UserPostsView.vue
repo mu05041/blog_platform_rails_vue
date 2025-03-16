@@ -205,7 +205,7 @@ const getBlogPosts = () => {
 const formatDate = (dateString) => {
   if (!dateString) return '';
   const options = { year: 'numeric', month: 'long', day: 'numeric' };
-  return new Date(dateString).toLocaleDateString('ko-KR', options);
+  return new Date(dateString).toLocaleDateString('ja-JP', options);
 };
 
 // コンテンツの要約

@@ -11,7 +11,7 @@
         <p class="mt-2">記事を読み込み中です...</p>
       </div>
       
-      <!-- 게시물 내용 -->
+      <!--記事コンテンツ -->
       <div v-else-if="post.id" class="row">
         <div class="col-lg-10 col-md-12 mx-auto">
           <h1 class="mb-3">{{ post.title }}</h1>
@@ -112,7 +112,7 @@
     });
   }
   
-  // 게시물 삭제
+  // 記事削除
   const deletePost = () => {
     if (!confirm('本当にこの記事を削除しますか?')) return;
     
@@ -130,7 +130,7 @@
   const formatDate = (dateString) => {
     if (!dateString) return '';
     const options = { year: 'numeric', month: 'long', day: 'numeric' };
-    return new Date(dateString).toLocaleDateString('ko-KR', options);
+    return new Date(dateString).toLocaleDateString('ja-JP', options);
   }
   
   onMounted(() => {

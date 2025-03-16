@@ -105,9 +105,12 @@ rails test test\controllers\api\v1\posts_controller_test.rb
 ## 📸 スクリーンショット
 
 ### 메인페이지
-- 게시글 목록 <br>
+- 記事リスト <br>
 <img src="./images/postlist.png"/>
+- モバイルレスポンシブ <br>
+<img src="./images/mobile.png"/>
 
+                                                            
 
 
 ## 📑 システムドキュメント
