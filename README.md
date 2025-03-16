@@ -76,7 +76,7 @@ npm run dev  # フロントエンドサーバ
 ```
 
 ##  🧪 テスト
-###　テストフレームワーク
+### テストフレームワーク
 - Minitest (Ruby on Railsデフォルトのテストフレームワーク)
 ### 테스트 실행 방법
 ```bash
@@ -115,12 +115,19 @@ rails test test\controllers\api\v1\posts_controller_test.rb
 <img src="./images/NewPost.png" width="70%"/>
 
 
-### 사용자 인증 화면                                 
+### 사용자인증화면
 - ログインページ <br>
 <img src="./images/login.png" width="50%"/>
 - ユーザー登録ページ <br>
 <img src="./images/signup.png" width="50%"/>
 
+### 기능 시연
+- 카테고리별 필터링
+
+- 검색 기능 사용예시
+
+- 반응형 레이아웃 <br>
+<img src="./images/responsive.gif" width="50%"/>
 
 ## 📑 システムドキュメント
 👉[API仕様およびERD](https://capricious-algebra-cf0.notion.site/DataX-1b2aaefa04e680d1a397c4a5243261a7)
