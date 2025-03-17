@@ -4,7 +4,7 @@
     <div class="row mb-4">
       <div class="col-12">
         <h2 class="text-center fw-bold blog-title">{{ `${username}のブログ` }}</h2>
-        <p class="text-center text-muted">{{ isMyBlog ? 'マイブログ管理' : '公開ブログ投稿リスト' }}</p>
+        <p class="text-center text-muted">{{ isMyBlog ? 'マイブログ' : '公開ブログ投稿リスト' }}</p>
         
         <!-- 自分のブログの場合のみ表示される投稿ボタン -->
         <div v-if="isMyBlog" class="text-center mt-3">

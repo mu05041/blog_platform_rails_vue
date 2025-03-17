@@ -13,7 +13,7 @@
                   class="form-control"
                   id="username"
                   v-model="username"
-                  placeholder="Please put your name"
+                  placeholder="ユーザー名を入力してください"
                   required
                 />
               </div>
@@ -25,7 +25,7 @@
                   class="form-control"
                   id="email"
                   v-model="email"
-                  placeholder="Please put your email"
+                  placeholder="メールアドレスを入力してください"
                   aria-describedby="emailHelp"
                   required
                 />
@@ -38,7 +38,7 @@
                   class="form-control"
                   id="password"
                   v-model="password"
-                  placeholder="Please put password"
+                  placeholder="パスワードを入力してください"
                   required
                 />
               </div>
@@ -50,7 +50,7 @@
                   class="form-control"
                   id="password-confirmation"
                   v-model="passwordConfirmation"
-                  placeholder="Please confirm your password"
+                  placeholder="パスワードをもう一度入力してください"
                   required
                 />
               </div>

@@ -13,7 +13,7 @@
                   class="form-control"
                   id="email"
                   v-model="email"
-                  placeholder="Please put your email"
+                  placeholder="メールアドレスを入力してください"
                   aria-describedby="emailHelp"
                   required
                 />
@@ -25,7 +25,7 @@
                   class="form-control"
                   id="password"
                   v-model="password"
-                  placeholder="Please put password"
+                  placeholder="パスワードを入力してください"
                   required
                 />
               </div>
@@ -40,7 +40,7 @@
               </div>
             </form>
             <div class="signup-section text-center mt-4">
-              <p class="mb-1">Are you not signed up yet?</p>
+              <p class="mb-1">まだ会員登録がお済みでしょうか？</p>
               <router-link to="/signup" class="btn btn-outline-primary btn-sm">Sign Up</router-link>
             </div>
           </div>
