@@ -1,5 +1,5 @@
-# 카테고리 생성
-puts "Creating categories..."
+# カテゴリ作成
+puts "カテゴリを作成中..."
 categories = [
   'Travel',
   'Food',
@@ -15,7 +15,7 @@ categories.each do |category_name|
   end
 end
 
-# 태그 생성
+# タグ作成
 puts "Creating tags..."
 tags = [
   'Sunny',
@@ -30,8 +30,8 @@ tags.each do |tag_name|
   Tag.create(name: tag_name) unless Tag.exists?(name: tag_name)
 end
 
-# 사용자 생성
-puts "Creating users..."
+# ユーザー作成
+puts "ユーザーを作成中..."
 users = [
   { username: 'admin', email: 'admin@example.com', password: 'password123' },
   { username: 'john', email: 'john@example.com', password: 'password123' },
@@ -47,28 +47,28 @@ users.each do |user|
   )
 end
 
-# 포스트 생성
+# 記事を作成
 puts "Creating posts..."
 posts = [
   {
-    title: '일본 여행기',
-    content: '일본 여행은 정말 멋졌습니다. 음식, 문화, 사람들 모두 환상적이었습니다.',
+    title: "アメリカ旅行記",
+    content: "アメリカ旅行は本当に充実していました。広大な自然、多様な都市、様々な文化体験ができました。特にグランドキャニオンの景色とニューヨークの活気は忘れられません。アメリカ料理も予想以上に美味しく、人々の親切さにも感動しました。",
     published: true,
-    user: 'john',
-    category: 'Travel',
-    tag: 'Sunny'
+    user: "john",
+    category: "Travel",
+    tag: "Sunny"
   },
   {
-    title: '도시의 라멘 맛집',
-    content: '도시의 모든 라멘 가게를 시도해 봤는데, 이 곳이 제일 맛있습니다.',
+    title: '都市のラーメン名店',
+    content: '都市のすべてのラーメン店を試してみましたが、ここが一番美味しいです。',
     published: true,
     user: 'jane',
     category: 'Food',
     tag: 'Rainy'
   },
   {
-    title: 'Ruby on Rails 소개',
-    content: 'Ruby on Rails는 빠른 개발을 가능하게 하는 강력한 웹 프레임워크입니다.',
+    title: 'Ruby on Railsの紹介',
+    content: 'Ruby on Railsは迅速な開発を可能にする強力なWebフレームワークです。',
     published: true,
     user: 'admin',
     category: 'Technology',
@@ -84,7 +84,7 @@ posts.each do |post_data|
     user: user_objects[post_data[:user]]
   )
   
-  # 포스트-카테고리 연결
+  # 記事ーカテゴリ紐付け
   category = Category.find_by(name: post_data[:category])
   if category
     PostCategory.create!(
@@ -93,7 +93,7 @@ posts.each do |post_data|
     )
   end
   
-  # 포스트-태그 연결
+  # 記事ータグ紐付け
   tag = Tag.find_by(name: post_data[:tag])
   if tag
     PostTag.create!(

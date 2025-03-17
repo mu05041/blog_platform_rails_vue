@@ -6,12 +6,15 @@ Rails.application.routes.draw do
       post '/login', to: 'auth#login'
       delete '/logout', to: 'auth#logout'
       
-      # 사용자 별 블로그 게시물 조회
+      # ユーザー別の記事を読み込む
       get '/:username/posts', to: 'posts#user_posts'
       get '/:username/posts/:id', to: 'posts#user_post'
       
-      # 게시물 CRUD (인증 필요)
+      # 記事 CRUD (認証必要)
       resources :posts, only: [:create, :update, :destroy]
     end
   end
+
+  match '*path', to: 'application#preflight', via: [:options]
+
 end

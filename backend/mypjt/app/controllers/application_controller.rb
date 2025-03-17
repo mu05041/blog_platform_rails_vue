@@ -11,7 +11,12 @@ class ApplicationController < ActionController::API
 
   def require_user
     unless logged_in?
-      render json: { error: "로그인이 필요합니다." }, status: :unauthorized
+      render json: { error: "ログインしてください" }, status: :unauthorized
     end
+  end
+
+
+  def preflight
+    head :ok
   end
 end
