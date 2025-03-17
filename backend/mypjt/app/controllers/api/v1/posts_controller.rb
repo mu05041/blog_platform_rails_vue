@@ -60,10 +60,16 @@ class Api::V1::PostsController < ApplicationController
       # カテゴリーとタグの更新
       @post.category_ids = params[:post][:category_ids] if params[:post][:category_ids]
       
-    # タグの紐付け
-    if params[:post][:tag_ids].present?
-      @post.tag_ids = params[:post][:tag_ids].map { |tag_name| Tag.find_or_create_by(name: tag_name).id }
-    end
+      # 태그 업데이트 (수정된 부분)
+      if params[:post].key?(:tag_ids)
+        if params[:post][:tag_ids].present?
+          @post.tag_ids = params[:post][:tag_ids].map { |tag_name| Tag.find_or_create_by(name: tag_name).id }
+        else
+          # 빈 배열이 전송된 경우 기존 태그를 모두 제거
+          @post.tags.clear
+        end
+      end
+    
     
       render json: @post
     else
